@@ -8,7 +8,7 @@ class AboutWindow(wx.Frame):
         self.SetBackgroundColour("white")
         self.Center()
 
-        self.aboutText = wx.StaticText(self, label="    兴趣使然用以练手写出来的，开源\n    完全没有任何技术含量，只是整合工作非常麻烦\n    在此对各大词典和说明书的编篡者和译者表示感谢\n    难免会有疏漏或错误，欢迎补充指正\n\n    V1.0\n    目前整合了大部分能用到的语句(1500条)\n    主要用来翻译词条语句\n    预计在后续版本中补全局变量和Phobos平台\n    以及加入新的可查询项     "+"\n\n    纠错补充或者有什么建议,欢迎联系我(溺水的鱼,QQ:1310623999)")
+        self.aboutText = wx.StaticText(self, label="    兴趣使然用以练手写出来的，开源\n    完全没有任何技术含量，只是整合工作非常麻烦\n    在此对各大词典和说明书的编篡者和译者表示感谢\n    难免会有疏漏或错误，欢迎补充指正\n\n    V1.1.0--23/1/7\n    目前整合了大部分能用到的语句(2056条)\n    主要用来翻译词条语句\n    预计在后续版本中补全Phobos平台\n    以及加入新的可查询项     "+"\n\n    纠错补充或者有什么建议,欢迎联系我(溺水的鱼,QQ:1310623999)")
 
 class MainFrame(wx.Frame):
     def __init__(self):
