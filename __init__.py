@@ -1,5 +1,7 @@
 import wx
-import MO3
+import RA2_Entries
+import XTypes
+import Infor
 
 class AboutWindow(wx.Frame):
     def __init__(self, MainFrame, title):
@@ -8,7 +10,37 @@ class AboutWindow(wx.Frame):
         self.SetBackgroundColour("white")
         self.Center()
 
-        self.aboutText = wx.StaticText(self, label="    兴趣使然用以练手写出来的，开源\n    完全没有任何技术含量，只是整合工作非常麻烦\n    在此对各大词典和说明书的编篡者和译者表示感谢\n    难免会有疏漏或错误，欢迎补充指正\n\n    V1.1.0--23/1/7\n    目前整合了大部分能用到的语句(2056条)\n    主要用来翻译词条语句\n    预计在后续版本中补全Phobos平台\n    以及加入新的可查询项     "+"\n\n    纠错补充或者有什么建议,欢迎联系我(溺水的鱼,QQ:1310623999)")
+        self.aboutText1 = wx.StaticText(self, label=Infor.aboutinfor1)
+        self.update_text = wx.StaticText(self, label="更新日志")
+        self.aboutText2 = wx.StaticText(self, label=Infor.aboutinfor2)
+        udfont = self.update_text.GetFont()
+        udfont = udfont.Underlined()
+        self.update_text.SetFont(udfont)
+        self.update_text.Bind(wx.EVT_LEFT_DOWN, self.OnUpdateLog)
+        self.aboutText1.SetPosition((10, 5))
+        self.aboutText2.SetPosition((10, 110))
+        self.update_text.SetPosition((10, 80))
+
+        handcursor = wx.Cursor(wx.CURSOR_HAND)
+        self.update_text.SetCursor(handcursor)
+
+    def OnUpdateLog(self, event):
+        new_window = UpdateLogWindow(self, "新窗口")
+        new_window.Show()
+
+class UpdateLogWindow(wx.Frame):
+    def __init__(self, AboutWindow, title):
+        wx.Frame.__init__(self, AboutWindow, id=1, title='更新日志', size=(400,300))
+        self.SetSizeHints(minSize=(400,300), maxSize=(400,300))
+        self.SetBackgroundColour("white")
+        self.Center()
+
+        self.scrolled_window = wx.ScrolledWindow(self, -1)
+        self.logBox = wx.StaticText(self.scrolled_window, label=Infor.updatelog)
+
+        self.scrolled_window.SetScrollbars(20, 20, 0, 50)
+
+
 
 class MainFrame(wx.Frame):
     def __init__(self):
@@ -30,15 +62,14 @@ class MainFrame(wx.Frame):
         closeItem.SetBitmap(wx.ArtProvider.GetBitmap(wx.ART_CLOSE))
 
         self.comboBox = wx.ComboBox(self, pos=(0, 0), size=(300, 25), style=wx.CB_DROPDOWN)
-        # self.textCtrl = wx.TextCtrl(self, pos=(0, 0), size=(300, 25), style=wx.TE_PROCESS_ENTER)
-        self.textCtrl2 = wx.TextCtrl(self, pos=(0, 0), size=(450, 185), style=wx.TE_MULTILINE|wx.TE_READONLY)
+        self.resultBox = wx.TextCtrl(self, pos=(0, 0), size=(450, 185), style=wx.TE_MULTILINE|wx.TE_READONLY)
         self.button = wx.Button(self, label="查询")
         self.button.Bind(wx.EVT_BUTTON, self.OnButtonClick)
         self.comboBox.Bind(wx.EVT_TEXT_ENTER, self.OnButtonClick)
         sizer = wx.BoxSizer(wx.VERTICAL)
         inputsizer = wx.BoxSizer(wx.HORIZONTAL)
         sizer.AddSpacer(10)
-        sizer.Add(self.textCtrl2, flag=wx.ALIGN_CENTER)
+        sizer.Add(self.resultBox, flag=wx.ALIGN_CENTER)
         sizer.AddSpacer(20)
         sizer.Add(inputsizer, flag=wx.ALIGN_CENTER)
         inputsizer.Add(self.comboBox)
@@ -66,31 +97,13 @@ class MainFrame(wx.Frame):
             equal_sign_index = keyword.find("=")
             keyword = keyword[:equal_sign_index]
         if keyword[:7] == "versus.":
-            if keyword[-10:] == ".forcefire" and keyword != "versus.forcefire":
-                parts = keyword.split(".",2)
-                armorparts = parts[1]
-                self.textCtrl2.SetValue("是否可以对"+armorparts+"护甲强行攻击")
-            elif keyword[-10:] == ".retaliate" and keyword != "versus.retaliate":
-                parts = keyword.split(".",2)
-                armorparts = parts[1]
-                self.textCtrl2.SetValue("是否可以对"+armorparts+"护甲反击")
-            elif keyword[-15:] == ".passiveacquire" and keyword != "versus.passiveacquire":
-                parts = keyword.split(".",2)
-                armorparts = parts[1]
-                self.textCtrl2.SetValue("是否可以对"+armorparts+"护甲主动攻击")
-            elif keyword.count('.') == 1:
-                parts = keyword.split(".",1)
-                armorparts = parts[1]
-                self.textCtrl2.SetValue("该弹头对"+armorparts+"护甲的伤害百分比")
-            else:
-                self.textCtrl2.SetValue("Keyword not found.")
+            self.resultBox.SetValue(XTypes.ArmorEntries(keyword))
         else:
-            if keyword in MO3.data:
-                self.textCtrl2.SetValue(MO3.data[keyword])
+            if keyword in RA2_Entries.entries:
+                self.resultBox.SetValue(RA2_Entries.entries[keyword][1])
             else:
-                self.textCtrl2.SetValue("Keyword not found.")
+                self.resultBox.SetValue("Keyword not found.")
         MAX_HISTORY = 5
-        # search_term = self.comboBox.GetValue()
         for i in range(self.comboBox.GetCount()):
             if self.comboBox.GetString(i) == keyword:
                 self.comboBox.Delete(i)
@@ -103,4 +116,4 @@ app = wx.App()
 frame = MainFrame()
 frame.Show()
 app.MainLoop()
-# pyinstaller --onefile --version-file version.txt --noconsole --icon=fishico.ico --add-data "MO3.py;." __init__.py
+# pyinstaller --onefile --version-file version.txt --noconsole --icon=fishico.ico --add-data "XTypes.py;." --add-data "RA2_Entries.py;." --add-data "Infor.py;." __init__.py
