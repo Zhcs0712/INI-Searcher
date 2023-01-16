@@ -7,7 +7,17 @@ aboutinfor2 = """纠错补充或者有什么建议,欢迎联系我
 (溺水的鱼,QQ:1310623999)
 """
 
-updatelog = """   V1.2.1--23/1/11
+updatelog = """   V1.3.0--23/1/16
+   可查询语句修正至2287条
+   (去除了大量的重复词条)
+   计划增加更多的可查询项(如art、IE)
+   ---筛选功能的关键词查询已可用---
+   (标签筛选暂不可用)
+   帮助界面的标签说明进行了大幅优化
+   (增加了其它INI的标签说明)
+   现在你可以在关于界面看到Github的仓库链接了
+
+   V1.2.1--23/1/11
    可查询语句修正至2336条
    计划增加更多的可查询项(如art、IE)
    大幅优化了RA2_Entries的词条结构
@@ -16,7 +26,8 @@ updatelog = """   V1.2.1--23/1/11
    预置了筛选功能(暂不可用)
 
    V1.2.0--23/1/9
-   可查询语句增多到2334条,已整合完成
+   可查询语句增多到2334条
+   -----词条已大致整合完成-----
    计划增加更多的可查询项(如IE)
    大幅优化了文件结构
    提高了应用图标的清晰度
@@ -32,64 +43,22 @@ updatelog = """   V1.2.1--23/1/11
    以及加入新的可查询项
 """
 
-typesnote = """
-[General]         全局设定
-   [JumpjetControls]
-   [SpecialWeapons]
-   [AudioVisual]
-   [CrateRules]
-   [Powerups]
-   [CombatDamage]
-   [Radiation]
-   [ElevationModel]
-   [WallModel]
-   [Colors]
-   [MultiplayerDialogSettings]
-[Side]            阵营/国家设定
-   [Sides]
-   [Countries]
-[AI]              AI设定
-   [AI]
-   [IQ]
-   [Easy]
-   [Normal]
-   [Difficult]
-[Other]           其它
-   [Particles]
-   [VoxelAnims]
-   [VariableNames]
-   [ParticleSystems]
-   [TerrainTypes]
-   [SmudgeTypes]
-   [OverlayTypes]
+helptext = """   未勾选筛选：
+   在输入框内输入词条，点击[查询]按钮或回车
+   即可查询词条解释
 
-[TechnoType]      单位设定
-[SuperWeapon]     超武设定
-   [SuperWeapons]
-[BuildingType]    建筑设定
-   [BuildingTypes]
-[InfantryType]    步兵设定
-   [InfantryTypes]
-[VehicleType]     载具设定
-   [VehicleTypes]
-[AircraftType]    飞行器设定
-   [AircraftType]
-[WeaponType]     武器设定
-   [WeaponTypes]
-[Projectile]      抛射体设定
-   [Projectiles]
-[Warhead]         弹头设定
-   [Warheads]
-[Animation]       动画设定
-   [Animations]
+   勾选筛选：
+   在输入框内输入关键词，点击[查询]按钮或回车
+   (当然，你也能以空格隔开，输入多个关键词)
+   即可在最下方的选择框中看到搜索到的相关词条
+   选择词条即可查看解释
 
-(original)        原平台,包含TS等
-(Ares)            阿瑞斯平台
-(Phobos)          火卫一平台
+   当然你也可以为中间三个选择框设置筛选范围
+   ( ! 该功能暂不可用 ! )
+   来更精准的查找词条(可以留空)
+   第一个为词条的应用标签
+   第二个为词条对应的平台
+   第三个为词条所属的ini文件
+   具体说明请在菜单的'帮助'中查看
 
-{rules}           rules.ini/rulesmd.ini/rulesmo.ini
-{art}             art.ini/artmd.ini/artmo.ini
-{sound}           sound.ini/soundmd.ini/soundmo.ini
-{ui}              ui.ini/uimd.ini/uimo.ini
-{ai}              ai.ini/aimd.ini/aimo.ini
 """
