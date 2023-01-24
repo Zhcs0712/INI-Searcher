@@ -1,13 +1,17 @@
 import wx
 import re
+import os
 import wx.adv
 import webbrowser
+from tkinter import Tk
+from tkinter import filedialog
 import Infor
 import Database.RA2_Entries as RA2_Entries
 import Database.EIP_Debug as EIP_Debug
 import Database.XTypes as XTypes
-import Win.Wins as Wins
-import Win.Wins_Tool as Wins_Tool
+import Wins.Wins_Basic as Wins_Basic
+import Wins.Wins_Tool as Wins_Tool
+import Wins.Wins_ENC as Wins_ENC
 
 class MyPanel(wx.Panel):
     def __init__(self, parent):
@@ -76,10 +80,18 @@ class MainFrame(wx.Frame):
         helpEngineItem.SetBitmap(wx.ArtProvider.GetBitmap(wx.ART_TICK_MARK))
         helpINIItem.SetBitmap(wx.ArtProvider.GetBitmap(wx.ART_TICK_MARK))
 
+        battlemenu = wx.Menu()
+        mo_BItem = battlemenu.Append(121, "心灵终结(3.3.6)")
+        self.Bind(wx.EVT_MENU, self.OnTool_MOBattles, mo_BItem)
+
         toolmenu = wx.Menu()
         IEtoolItem = toolmenu.Append(200, "IE查错", "")
+        toolmenu.AppendSeparator()
+        BattletoolItem = toolmenu.AppendSubMenu(battlemenu, "战役对照")
+        toolmenu.AppendSeparator()
+        PEncryptionItem = toolmenu.Append(201, "伪加密", "")
         self.Bind(wx.EVT_MENU, self.OnTool_IE, IEtoolItem)
-        IEtoolItem.SetBitmap(wx.ArtProvider.GetBitmap(wx.ART_HELP_SIDE_PANEL))
+        self.Bind(wx.EVT_MENU, self.OnPseudo_ENC, PEncryptionItem)
 
         self.searchComboBox = wx.ComboBox(self, pos=(0, 0), size=(300, 25), style=wx.CB_DROPDOWN)
         self.filtrateChoice = wx.Choice(self, -1, size=(300, 25))
@@ -149,71 +161,79 @@ class MainFrame(wx.Frame):
         self.Close()
 
     def OnAbout(self, event):
-        new_window = Wins.AboutWindow(self, "")
+        new_window = Wins_Basic.AboutWindow(self, "")
         new_window.Show()
 
     def OnHelpButton(self, event):
-        new_window = Wins.HelpWindow(self, "")
+        new_window = Wins_Basic.HelpWindow(self, "")
         new_window.Show()
 
     def OnHelp_RulesLs(self, event):
-        new_window = Wins.RulesLsWindow(self, "")
+        new_window = Wins_Basic.RulesLsWindow(self, "")
         new_window.Show()
 
     def OnHelp_ArtLs(self, event):
-        new_window = Wins.ArtLsWindow(self, "")
+        new_window = Wins_Basic.ArtLsWindow(self, "")
         new_window.Show()
 
     def OnHelp_SoundLs(self, event):
-        new_window = Wins.SoundLsWindow(self, "")
+        new_window = Wins_Basic.SoundLsWindow(self, "")
         new_window.Show()
 
     def OnHelp_UiLs(self, event):
-        new_window = Wins.UiLsWindow(self, "")
+        new_window = Wins_Basic.UiLsWindow(self, "")
         new_window.Show()
 
     def OnHelp_AiLs(self, event):
-        new_window = Wins.AiLsWindow(self, "")
+        new_window = Wins_Basic.AiLsWindow(self, "")
         new_window.Show()
 
     def OnHelp_MapLs(self, event):
-        new_window = Wins.MapLsWindow(self, "")
+        new_window = Wins_Basic.MapLsWindow(self, "")
         new_window.Show()
 
     def OnHelp_SnowLs(self, event):
-        new_window = Wins.SnowLsWindow(self, "")
+        new_window = Wins_Basic.SnowLsWindow(self, "")
         new_window.Show()
 
     def OnHelp_MovieLs(self, event):
-        new_window = Wins.MovieLsWindow(self, "")
+        new_window = Wins_Basic.MovieLsWindow(self, "")
         new_window.Show()
 
     def OnHelp_BattleLs(self, event):
-        new_window = Wins.BattleLsWindow(self, "")
+        new_window = Wins_Basic.BattleLsWindow(self, "")
         new_window.Show()
 
     def OnHelp_MissionLs(self, event):
-        new_window = Wins.MissionLsWindow(self, "")
+        new_window = Wins_Basic.MissionLsWindow(self, "")
         new_window.Show()
 
     def OnHelp_Ra2Ls(self, event):
-        new_window = Wins.Ra2LsWindow(self, "")
+        new_window = Wins_Basic.Ra2LsWindow(self, "")
         new_window.Show()
 
     def OnHelp_RgbLs(self, event):
-        new_window = Wins.RgbLsWindow(self, "")
+        new_window = Wins_Basic.RgbLsWindow(self, "")
         new_window.Show()
 
     def OnHelp_Engine(self, event):
-        new_window = Wins.EnginesWindow(self, "")
+        new_window = Wins_Basic.EnginesWindow(self, "")
         new_window.Show()
 
     def OnHelp_INI(self, event):
-        new_window = Wins.INIFilesWindow(self, "")
+        new_window = Wins_Basic.INIFilesWindow(self, "")
         new_window.Show()
 
     def OnTool_IE(self, event):
         new_window = Wins_Tool.IEToolWindow(self, "")
+        new_window.Show()
+
+    def OnTool_MOBattles(self, event):
+        new_window = Wins_Tool.MO_BToolWindow(self, "")
+        new_window.Show()
+
+    def OnPseudo_ENC(self, event):
+        new_window = Wins_ENC.PseudoENCWindow(self, "")
         new_window.Show()
 
     def OnCheckBox(self, event):
@@ -345,4 +365,4 @@ frame = MainFrame()
 frame.Show()
 app.MainLoop()
 # pyInstaller 安装命令
-# pyinstaller --onefile --version-file version.txt --noconsole --icon=fishico.ico --add-binary "Win/*;Win" --add-binary "Database/*;Database" --add-data "Infor.py;." __init__.py
+# pyinstaller --onefile --version-file version.txt --noconsole --icon=fishico.ico --add-binary "Wins/*;Wins" --add-binary "Database/*;Database" --add-data "Infor.py;." __init__.py

@@ -7,7 +7,7 @@ block_cipher = None
 a = Analysis(
     ['__init__.py'],
     pathex=[],
-    binaries=[('Win/*', 'Win'), ('Database/*', 'Database')],
+    binaries=[('Wins/*', 'Wins'), ('Database/*', 'Database')],
     datas=[('Infor.py', '.')],
     hiddenimports=[],
     hookspath=[],
